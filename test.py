@@ -1,1 +1,1 @@
-nfjezfe
+import numpy as np
