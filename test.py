@@ -37,4 +37,48 @@ def name (url):
     info=soup.find('div', {'class': "col-12"})
     return info.find('h1').text.strip()
 
+# %% 
+#Fonction donnant l'âge d'un joueur
+def age (url):
+    soup = soup_maker(url)
+    info=soup.find('div', {'class': "col-12"})
+    bio = info.find('div', {'class': 'meta ellipsis'})
+    bio_str = bio.text.strip()
+    bio = bio_str.split()
+    return bio[-6]
+
+#%%
+#Fonction donnant le poids d'un joueur
+def poids(url):
+    soup = soup_maker(url)
+    info=soup.find('div', {'class': "col-12"})
+    bio = info.find('div', {'class': 'meta ellipsis'})
+    bio_str = bio.text.strip()
+    bio = bio_str.split()
+    return bio[-1]
+
+#%%
+#Fonction donnant la taille d'un joueur
+def taille(url):
+    soup = soup_maker(url)
+    info=soup.find('div', {'class': "col-12"})
+    bio = info.find('div', {'class': 'meta ellipsis'})
+    bio_str = bio.text.strip()
+    bio = bio_str.split()
+    return bio[-2]
+
+#%%
+all_ref = all_ref(url)
+# %%
+url_1=all_ref[0]
+# %%
+soup_1=soup_maker(url_1)
+# %%
+info=soup_1.find('div', {'class': "col-12"})
+# %%
+bio = info.find('div', {'class': 'meta ellipsis'})
+# %%
+bio_str = bio.text.strip()
+# %%
+a = bio_str.split()
 # %%
