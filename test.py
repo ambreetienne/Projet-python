@@ -17,16 +17,18 @@ def soup_maker(url):
     return soup
 
 #%%
-#Fonction donnant la liste des url de chaque joueur
-def all_ref(url):
+#Fonction donnant la liste des url de chaque n*60 joueur
+def all_ref(n):
     L=[]
-    soup=soup_maker(url)
-    table = soup.find('table', {'class': 'table-hover'})
-    tbody = table.find('tbody', {'class': 'list'})
-    col_name = tbody.find_all('tr')
-    for col in col_name:
-        col_ref = col.find('a')
-        L.append(col_ref['href'])
+    for i in range(n):
+        url='http://sofifa.com/players?offset=' + str(i*60)
+        soup=soup_maker(url)
+        table = soup.find('table', {'class': 'table-hover'})
+        tbody = table.find('tbody', {'class': 'list'})
+        col_name = tbody.find_all('tr')
+        for col in col_name:
+            col_ref = col.find('a')
+            L.append(col_ref['href'])
     return ["http://sofifa.com" + L[i] for i in range(len(L))]
 
 
@@ -67,3 +69,53 @@ def taille(url):
     bio = bio_str.split()
     return bio[-2]
 
+# %%
+def overall_rating(url):
+    soup=soup_maker(url)
+    info=soup.find('div', {'class': "bp3-card"})
+    info_stat=info.find('section', {'class': 'card spacing'})
+    all=info_stat.findAll('div', {'class': 'block-quarter'})
+    a=all[0].find('span')
+    return a.text.strip()
+
+#%% 
+def potential(url):
+    soup=soup_maker(url)
+    info=soup.find('div', {'class': "bp3-card"})
+    info_stat=info.find('section', {'class': 'card spacing'})
+    all=info_stat.findAll('div', {'class': 'block-quarter'})
+    a=all[1].find('span')
+    return a.text.strip()
+
+#%% 
+def value(url):
+    soup=soup_maker(url)
+    info=soup.find('div', {'class': "bp3-card"})
+    info_stat=info.find('section', {'class': 'card spacing'})
+    all=info_stat.findAll('div', {'class': 'block-quarter'})
+    a=all[2].find('span')
+    return a.text.strip()
+
+#%% 
+def wage(url):
+    soup=soup_maker(url)
+    info=soup.find('div', {'class': "bp3-card"})
+    info_stat=info.find('section', {'class': 'card spacing'})
+    all=info_stat.findAll('div', {'class': 'block-quarter'})
+    a=all[3].find('span')
+    return a.text.strip()
+
+#%%
+url_1='https://sofifa.com/player/178509/olivier-giroud/230006/'
+soup=soup_maker(url_1)
+info=soup.find('div', {'class': "bp3-card"})
+
+# %%
+info_stat=info.find('section', {'class': 'card spacing'})
+
+# %%
+test = info_stat.findAll('div', {'class': 'block-quarter'})
+# %%
+a=test[1].find('span')
+#%%
+a.text.strip()
