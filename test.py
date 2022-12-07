@@ -93,8 +93,9 @@ def value(url):
     info=soup.find('div', {'class': "bp3-card"})
     info_stat=info.find('section', {'class': 'card spacing'})
     all=info_stat.findAll('div', {'class': 'block-quarter'})
-    a=all[2].find('span')
-    return a.text.strip()
+    a=all[2].find('div')
+    b=a.text.strip()
+    return b.split('V')[0]
 
 #%% 
 def wage(url):
@@ -102,20 +103,11 @@ def wage(url):
     info=soup.find('div', {'class': "bp3-card"})
     info_stat=info.find('section', {'class': 'card spacing'})
     all=info_stat.findAll('div', {'class': 'block-quarter'})
-    a=all[3].find('span')
-    return a.text.strip()
+    a=all[3].find('div')
+    b=a.text.strip()
+    return b.split('W')[0]
 
 #%%
 url_1='https://sofifa.com/player/178509/olivier-giroud/230006/'
 soup=soup_maker(url_1)
 info=soup.find('div', {'class': "bp3-card"})
-
-# %%
-info_stat=info.find('section', {'class': 'card spacing'})
-
-# %%
-test = info_stat.findAll('div', {'class': 'block-quarter'})
-# %%
-a=test[1].find('span')
-#%%
-a.text.strip()
