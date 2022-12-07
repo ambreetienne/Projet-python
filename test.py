@@ -108,6 +108,24 @@ def wage(url):
     return b.split('W')[0]
 
 #%%
+def release_clause(url):
+    soup=soup_maker(url)
+    info=soup.find('ul', {'class': 'pl'})
+    info_sup=info.findAll('li', {'class': 'ellipsis'})
+    a=info_sup[-2].find('span')
+    return a.text.strip()
+
+#%%
+def position(url):
+    soup=soup_maker(url)
+    info=soup.find('span', {'class': "pos pos25"})
+    return info.text.strip()
+
+#%%
 url_1='https://sofifa.com/player/178509/olivier-giroud/230006/'
 soup=soup_maker(url_1)
 info=soup.find('div', {'class': "bp3-card"})
+# %%
+test=soup.find('span', {'class': "pos pos25"})
+# %%
+test.text.strip()
