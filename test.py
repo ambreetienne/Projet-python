@@ -129,3 +129,7 @@ info=soup.find('div', {'class': "bp3-card"})
 test=soup.find('span', {'class': "pos pos25"})
 # %%
 test.text.strip()
+
+#%%
+def(n):
+    return n
