@@ -1,7 +1,7 @@
 #%%
 import urllib
 import bs4
-import pandas
+import pandas as pd
 import numpy as np
 from urllib import request
 import requests
