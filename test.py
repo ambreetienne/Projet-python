@@ -2,6 +2,7 @@
 import urllib
 import bs4
 import pandas
+import numpy as np
 from urllib import request
 import requests
 
@@ -130,12 +131,64 @@ def position(url):
     return a.text.strip()
 
 #%%
-url_1='https://sofifa.com/player/178509/olivier-giroud/230006/'
-soup=soup_maker(url_1)
-info=soup.find('div', {'class': "bp3-card"})
+def attacking(url):
+    soup=soup_maker(url)
+    skills=soup.findAll('div', {'class':'col col-12'})
+    attacking=skills[1].findAll('ul', {'class':'pl'})[0]
+    all=attacking.findAll('span',{'class': 'bp3-tag'})
+    L=[int(all[k].text.strip()) for k in range(5)]
+    return np.mean(L)
+
+# %%
+def technique(url):
+    soup=soup_maker(url)
+    skills=soup.findAll('div', {'class':'col col-12'})
+    attacking=skills[1].findAll('ul', {'class':'pl'})[1]
+    all=attacking.findAll('span',{'class': 'bp3-tag'})
+    L=[int(all[k].text.strip()) for k in range(5)]
+    return np.mean(L)
 
 #%%
-url_2='https://sofifa.com/player/239837/alexis-mac-allister/230007/'
+def mouvement(url):
+    soup=soup_maker(url)
+    skills=soup.findAll('div', {'class':'col col-12'})
+    attacking=skills[1].findAll('ul', {'class':'pl'})[2]
+    all=attacking.findAll('span',{'class': 'bp3-tag'})
+    L=[int(all[k].text.strip()) for k in range(5)]
+    return np.mean(L)
 
 #%%
-soup2=soup_maker(url_2)
+def puissance(url):
+    soup=soup_maker(url)
+    skills=soup.findAll('div', {'class':'col col-12'})
+    attacking=skills[1].findAll('ul', {'class':'pl'})[3]
+    all=attacking.findAll('span',{'class': 'bp3-tag'})
+    L=[int(all[k].text.strip()) for k in range(5)]
+    return np.mean(L)
+
+#%%
+def etat_esprit(url):
+    soup=soup_maker(url)
+    skills=soup.findAll('div', {'class':'col col-12'})
+    attacking=skills[1].findAll('ul', {'class':'pl'})[4]
+    all=attacking.findAll('span',{'class': 'bp3-tag'})
+    L=[int(all[k].text.strip()) for k in range(6)]
+    return np.mean(L)
+
+#%%
+def defense(url):
+    soup=soup_maker(url)
+    skills=soup.findAll('div', {'class':'col col-12'})
+    attacking=skills[1].findAll('ul', {'class':'pl'})[5]
+    all=attacking.findAll('span',{'class': 'bp3-tag'})
+    L=[int(all[k].text.strip()) for k in range(3)]
+    return np.mean(L)
+
+#%%
+def gardien(url):
+    soup=soup_maker(url)
+    skills=soup.findAll('div', {'class':'col col-12'})
+    attacking=skills[1].findAll('ul', {'class':'pl'})[6]
+    all=attacking.findAll('span',{'class': 'bp3-tag'})
+    L=[int(all[k].text.strip()) for k in range(5)]
+    return np.mean(L)
