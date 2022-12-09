@@ -9,7 +9,7 @@ import requests
 url = 'http://sofifa.com/players?offset=0'
 
 # %%
-# Fonction génératrice
+# Fonction génératrice de page html
 def soup_maker(url):
     r = requests.get(url)
     markup = r.content
@@ -70,6 +70,7 @@ def taille(url):
     return bio[-2]
 
 # %%
+# Fonction donnant overall_rating d'un joueur
 def overall_rating(url):
     soup=soup_maker(url)
     info=soup.find('div', {'class': "bp3-card"})
@@ -79,6 +80,7 @@ def overall_rating(url):
     return a.text.strip()
 
 #%% 
+# Fonction donnant potential d'un joueur
 def potential(url):
     soup=soup_maker(url)
     info=soup.find('div', {'class': "bp3-card"})
@@ -88,6 +90,7 @@ def potential(url):
     return a.text.strip()
 
 #%% 
+# Fonction donnant la valeur d'un joueur
 def value(url):
     soup=soup_maker(url)
     info=soup.find('div', {'class': "bp3-card"})
@@ -98,6 +101,7 @@ def value(url):
     return b.split('V')[0]
 
 #%% 
+# Fonction donnant le salaire d'un joueur
 def wage(url):
     soup=soup_maker(url)
     info=soup.find('div', {'class': "bp3-card"})
@@ -108,6 +112,7 @@ def wage(url):
     return b.split('W')[0]
 
 #%%
+# Fonction donnant la valeur de la clause de rupture
 def release_clause(url):
     soup=soup_maker(url)
     info=soup.find('ul', {'class': 'pl'})
@@ -116,20 +121,21 @@ def release_clause(url):
     return a.text.strip()
 
 #%%
+# Fonction donnant la position de jeu d'un joueur
 def position(url):
-    soup=soup_maker(url)
-    info=soup.find('span', {'class': "pos pos25"})
-    return info.text.strip()
+    oup=soup_maker(url)
+    info=soup.find('ul', {'class': 'ellipsis pl'})
+    info_pos=info.findAll('li')
+    a=info_pos[-4].find('span')
+    return a.text.strip()
 
 #%%
 url_1='https://sofifa.com/player/178509/olivier-giroud/230006/'
 soup=soup_maker(url_1)
 info=soup.find('div', {'class': "bp3-card"})
-# %%
-test=soup.find('span', {'class': "pos pos25"})
-# %%
-test.text.strip()
 
 #%%
-def(n):
-    return n
+url_2='https://sofifa.com/player/239837/alexis-mac-allister/230007/'
+
+#%%
+soup2=soup_maker(url_2)
