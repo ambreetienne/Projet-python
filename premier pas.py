@@ -125,7 +125,7 @@ def attacking(soup):
     skills=soup.findAll('div', {'class':'col col-12'})
     attacking=skills[1].findAll('ul', {'class':'pl'})[0]
     all=attacking.findAll('span',{'class': 'bp3-tag'})
-    L=[int(all[k].text.strip()) for k in range(5)]
+    L=[int(all[k].text.strip()) for k in range(len(all))]
     return np.mean(L)
 
 # %%
@@ -133,7 +133,7 @@ def technique(soup):
     skills=soup.findAll('div', {'class':'col col-12'})
     attacking=skills[1].findAll('ul', {'class':'pl'})[1]
     all=attacking.findAll('span',{'class': 'bp3-tag'})
-    L=[int(all[k].text.strip()) for k in range(5)]
+    L=[int(all[k].text.strip()) for k in range(len(all))]
     return np.mean(L)
 
 #%%
@@ -141,7 +141,7 @@ def mouvement(soup):
     skills=soup.findAll('div', {'class':'col col-12'})
     attacking=skills[1].findAll('ul', {'class':'pl'})[2]
     all=attacking.findAll('span',{'class': 'bp3-tag'})
-    L=[int(all[k].text.strip()) for k in range(5)]
+    L=[int(all[k].text.strip()) for k in range(len(all))]
     return np.mean(L)
 
 #%%
@@ -149,7 +149,7 @@ def puissance(soup):
     skills=soup.findAll('div', {'class':'col col-12'})
     attacking=skills[1].findAll('ul', {'class':'pl'})[3]
     all=attacking.findAll('span',{'class': 'bp3-tag'})
-    L=[int(all[k].text.strip()) for k in range(5)]
+    L=[int(all[k].text.strip()) for k in range(len(all))]
     return np.mean(L)
 
 #%%
@@ -157,7 +157,7 @@ def etat_esprit(soup):
     skills=soup.findAll('div', {'class':'col col-12'})
     attacking=skills[1].findAll('ul', {'class':'pl'})[4]
     all=attacking.findAll('span',{'class': 'bp3-tag'})
-    L=[int(all[k].text.strip()) for k in range(6)]
+    L=[int(all[k].text.strip()) for k in range(len(all))]
     return np.mean(L)
 
 #%%
@@ -165,7 +165,7 @@ def defense(soup):
     skills=soup.findAll('div', {'class':'col col-12'})
     attacking=skills[1].findAll('ul', {'class':'pl'})[5]
     all=attacking.findAll('span',{'class': 'bp3-tag'})
-    L=[int(all[k].text.strip()) for k in range(3)]
+    L=[int(all[k].text.strip()) for k in range(len(all))]
     return np.mean(L)
 
 #%%
@@ -173,7 +173,7 @@ def gardien(soup):
     skills=soup.findAll('div', {'class':'col col-12'})
     attacking=skills[1].findAll('ul', {'class':'pl'})[6]
     all=attacking.findAll('span',{'class': 'bp3-tag'})
-    L=[int(all[k].text.strip()) for k in range(5)]
+    L=[int(all[k].text.strip()) for k in range(len(all))]
     return np.mean(L)
 
 #%%
@@ -186,9 +186,9 @@ def all_info(url):
 
 
 #%%
-df=pd.DataFrame({'url': all_ref(17)})
+df=pd.DataFrame({'url': all_ref(100)})
 # %%
-L=[[] for i in range(16)]
+L=[[] for i in range(17)]
 
 #%%
 for url in df['url'].values:
@@ -209,9 +209,8 @@ for url in df['url'].values:
     L[13].append(defense(soup))
     L[14].append(gardien(soup))
     L[15].append(age(soup))
+    L[16].append(etat_esprit(soup))
 
-#%%
-M=[L,L]
 # %%
 df['Nom']=L[0]
 df['Taille']=L[1]
@@ -229,9 +228,12 @@ df['Mouvement']=L[11]
 df['Puissance']=L[12]
 df['Defense']=L[13]
 df['Gardien']=L[14]
+df['Etat Esprit']=L[16]
 #%%
 # Exportation dans un excel
 with pd.ExcelWriter('C:\Users\gille\Documents\ENSAE\2A\S1\Projet-python', engine='xlswriter') as writer:
     df.to_excel(writer,sheet_name='Datasofifa')
 # %%
 df.to_excel('Datasofifa.xlsx')
+
+# %%
