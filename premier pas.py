@@ -237,3 +237,33 @@ with pd.ExcelWriter('C:\Users\gille\Documents\ENSAE\2A\S1\Projet-python', engine
 df.to_excel('Datasofifa.xlsx')
 
 # %%
+# Fonction permettant de transformer les str en int
+def convert_value(wage):
+    a=wage.split('€')
+    if len(a[1].split('K'))==2:
+        b=a[1].split('K')
+        return float(b[0])*1000
+    elif len(a[1].split('M'))==2:
+        b=a[1].split('M')
+        return float(b[0])*1000000
+    else:
+        return float(a[1])
+
+# %%
+df=pd.read_excel(r'C:\Users\gille\Documents\ENSAE\2A\S1\Projet-python\Datasofifa.xlsx')
+#%%
+df.dropna()
+#%%
+df=df.drop(df[df['Clause de rupture'] == 'Yes'].index)
+df=df.drop(df[df['Clause de rupture'] == 'No'].index)
+df=df.drop(df[df['Clause de rupture'] == 'N/A/ N/A'].index)
+
+#%%
+df.reset_index()
+# %%
+df['Valeur']=df['Valeur'].apply(convert_value)
+df['Salaire']=df['Salaire'].apply(convert_value)
+df['Clause de rupture']=df['Clause de rupture'].apply(convert_value)
+
+
+# %%
