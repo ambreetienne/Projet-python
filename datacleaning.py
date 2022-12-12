@@ -61,8 +61,8 @@ df['Poids']=df['Poids'].apply(convert_poids)
 # %%
 df['Poste gardien']=np.where(df['Position']=='GK','1','0')
 
-# %%
-df.to_excel('Datasofifaclean.xlsx')
+##%%
+df.to_excel('Datasofifa.xlsx')
 
 # %%
 from sklearn import preprocessing
