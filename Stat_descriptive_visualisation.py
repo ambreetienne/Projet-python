@@ -101,3 +101,59 @@ sns.distplot(df["score_standard"] , color="olive", ax=axes[1])
 
 
 #%%
+
+# Graphique de la densité du score total et du salaire
+
+fig = sns.kdeplot(df['salaire_standard'], shade=True, color="r")
+
+fig = sns.kdeplot(df['score_standard'], shade=True, color="b")
+
+handles = [mpatches.Patch(facecolor=plt.cm.Reds(100), label="Salaire"),
+
+           mpatches.Patch(facecolor=plt.cm.Blues(100), label="Score total")]
+
+plt.legend(handles=handles)
+
+plt.show()
+
+
+
+# Score total sont + étalés que les salaires
+
+#%%
+
+# Corrélation des variables
+
+variable_corr=['Valeur','Taille','Age','Salaire','Clause de rupture',
+
+'Score total','Score pontentiel','Attaque','Technique','Puissance','Defense']
+
+df_corr=df[variable_corr]
+
+#%%
+
+matrice_corr = df_corr.corr()
+
+heatmap = sns.heatmap(matrice_corr, vmin=-1, vmax=1, annot=True)
+
+
+
+#%%
+
+pd.plotting.scatter_matrix(df_corr)
+
+
+
+#%%
+
+# Subplot valeur en fonction des autres variables
+
+for i in range(1,11):
+
+    plt.subplot(3,4,i)
+
+    plt.scatter(df[variable_corr[i]],df['Valeur'],s=0.5)
+
+    plt.xlabel(variable_corr[i])
+
+    plt.ylabel('Valeur')​
