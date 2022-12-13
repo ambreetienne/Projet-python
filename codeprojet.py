@@ -143,7 +143,6 @@ import pandas as pd
 from sklearn import preprocessing
 
 
-
 model=LinearRegression()
 model.fit(xTrain,yTrain)
 print(model.score(xTrain,yTrain))
