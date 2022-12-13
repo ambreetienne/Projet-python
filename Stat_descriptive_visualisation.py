@@ -156,4 +156,5 @@ for i in range(1,11):
 
     plt.xlabel(variable_corr[i])
 
-    plt.ylabel('Valeur')​
+    plt.ylabel("Valeur")
+# %%
