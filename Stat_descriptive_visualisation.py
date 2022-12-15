@@ -136,7 +136,11 @@ matrice_corr = df_corr.corr()
 
 heatmap = sns.heatmap(matrice_corr, vmin=-1, vmax=1, annot=True)
 
-
+#%%
+#Autre design de graphique
+plt.figure()
+p = matrice_corr.style.background_gradient(cmap='coolwarm', axis=None).set_precision(2)
+p
 
 #%%
 
