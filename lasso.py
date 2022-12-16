@@ -102,8 +102,8 @@ ax.plot(my_alphas, mse_train)
 ax.set_xscale('log')
 plt.axis('tight')
 plt.xlabel('alpha')
-plt.ylabel('Standardized Coefficients')
-plt.title('Lasso coefficients as a function of alpha');
+plt.ylabel('MSE')
+plt.title('MSE as a function of alpha');
 
 # %%
 #Détermination du alpha optimal
