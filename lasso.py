@@ -1,22 +1,17 @@
 #%%
 import numpy as np
-from sklearn.svm import LinearSVC
-from sklearn.feature_selection import SelectFromModel
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import Lasso
-import sklearn.metrics
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import RepeatedKFold
-import matplotlib.cm as cm
-import matplotlib.pyplot as plt
-from sklearn.linear_model import lasso_path
 import seaborn as sns
 import pandas as pd
-from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+import sklearn.metrics
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import Lasso
 from sklearn.metrics import mean_squared_error 
+from sklearn.linear_model import lasso_path
 from sklearn.linear_model import LassoCV
+
 
 # %%
 df=pd.read_excel('Datasofifaclean.xlsx')
@@ -81,7 +76,14 @@ plt.figure()
 p = sns.lineplot(y=nb_non_zero, x=alpha_for_path)
 p.set(title = r"Nombre de variables et paramètre de régularisation ($\alpha$)", xlabel=r'$\alpha$', ylabel='Nb. de variables')
 
+#%%
+ax = plt.gca()
 
+ax.plot(alpha_for_path, nb_non_zero)
+plt.axis('tight')
+plt.xlabel('alpha')
+plt.ylabel('Nombre de variable')
+plt.title("Nombre de variables retenues fonction de alpha")
 #%%
 #MSE en fonction de alpha
 mse_train=[]
@@ -96,14 +98,26 @@ for a in my_alphas:
     mse_train.append(mean_squared_error(y_train, pred_train))
 
 #%%
+#MSE de l'échantillon d'entraînement en fonction de alpha
 ax = plt.gca()
 
-ax.plot(my_alphas, mse_train)
+ax.plot(alpha_for_path, mse_train)
 ax.set_xscale('log')
 plt.axis('tight')
 plt.xlabel('alpha')
 plt.ylabel('MSE')
-plt.title('MSE as a function of alpha');
+plt.title("MSE de l'échantillon de test")
+
+#%%
+#MSE de l'échantillon de test en fonction de alpha
+ax = plt.gca()
+
+ax.plot(my_alphas, mse_test)
+ax.set_xscale('log')
+plt.axis('tight')
+plt.xlabel('alpha')
+plt.ylabel('MSE')
+plt.title("MSE de l'échantillon de test")
 
 # %%
 #Détermination du alpha optimal
