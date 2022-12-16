@@ -1,13 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Dec  4 12:18:07 2022
-
-@author: lucasberne
-"""
 #%%
 #importation des modules et package
-
 import pandas as pd 
 import numpy as np
 from matplotlib import pyplot as plt
