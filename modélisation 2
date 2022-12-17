@@ -1,0 +1,113 @@
+import pandas as pd 
+import numpy as np
+from matplotlib import pyplot as plt
+import xlsxwriter
+import csv
+import seaborn as sns
+from sklearn import preprocessing
+import statsmodels.api as sm
+
+df=pd.read_excel("Datasofifaclean.xlsx")
+
+#Standardisation de chacune des colonnes utile pour le modèle
+
+colonne_Modèle=["Age","Taille","Salaire","Valeur","Score total","Attaque","Technique","Mouvement","Puissance","Defense","Gardien","Etat Esprit"]
+
+for k in colonne_Modèle:
+    df["Standard_"+str(k)] = preprocessing.scale(df[k])
+    
+    
+
+
+standard_colonne_modèle=[]
+for j in colonne_Modèle:
+    standard_colonne_modèle.append("Standard_"+str(j))
+
+
+
+
+
+
+
+# Séparation des données en train et test
+
+from sklearn.model_selection import train_test_split
+xTrain, xTest, yTrain, yTest = train_test_split(df[standard_colonne_modèle].drop("Standard_Valeur",axis=1).values, df["Standard_Valeur"].values, test_size = 0.2,random_state = 0)
+
+
+##Application de la régression linéaire
+
+
+
+from sklearn.linear_model import LinearRegression
+
+model=LinearRegression()
+model.fit(xTrain,yTrain)
+print(model.score(xTrain,yTrain))
+print(model.coef_)
+
+predictions=model.predict(xTest)
+
+
+plt.scatter(yTest,predictions)
+
+
+
+###Régression linéaire avec statsmodels sur les colonnes non standarisées
+
+X=df[colonne_Modèle].drop("Valeur",axis=1)
+X=sm.add_constant(X)
+y=df["Valeur"]
+
+model= sm.OLS(y,X)
+results= model.fit()
+print(results.summary())
+
+
+####Même chose mais avec les colonnes standarisées
+
+X=df[standard_colonne_modèle].drop("Standard_Valeur",axis=1)
+X=sm.add_constant(X)
+y=df["Standard_Valeur"]
+
+model= sm.OLS(y,X)
+results= model.fit()
+print(results.summary())
+
+
+#### AVEC RAJOUT DE LA VARIABLE CLAUSE DE RUPTURE
+
+colonne_Modèle2=["Age","Taille","Salaire","Valeur","Clause de rupture","Score total","Attaque","Technique","Mouvement","Puissance","Defense","Gardien","Etat Esprit"]
+
+
+for k in colonne_Modèle2:
+    df["Standard_"+str(k)] = preprocessing.scale(df[k])
+    
+    
+
+
+standard_colonne_modèle2=[]
+for j in colonne_Modèle2:
+    standard_colonne_modèle2.append("Standard_"+str(j))
+
+
+
+
+
+
+X=df[standard_colonne_modèle2].drop("Standard_Valeur",axis=1)
+X=sm.add_constant(X)
+y=df["Standard_Valeur"]
+
+model= sm.OLS(y,X)
+results= model.fit()
+print(results.summary())
+
+
+
+
+#### Passons à la régression lasso
+
+from sklearn.linear_model import Lasso
+las = Lasso(1.).fit(xTrain, yTrain)
+las.coef_

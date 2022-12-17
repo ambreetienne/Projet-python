@@ -133,27 +133,31 @@ df_corr=df[variable_corr]
 #%%
 
 matrice_corr = df_corr.corr()
+plt.figure(figsize=(15,5))
 
 heatmap = sns.heatmap(matrice_corr, vmin=-1, vmax=1, annot=True)
 
 #%%
-#Autre design de graphique
-plt.figure()
-p = matrice_corr.style.background_gradient(cmap='coolwarm', axis=None).set_precision(2)
-p
 
-#%%
+axes=pd.plotting.scatter_matrix(df_corr, figsize=(9,9))
+for ax in axes.flatten():
+    ax.xaxis.label.set_rotation(90)
+    ax.yaxis.label.set_rotation(0)
+    ax.yaxis.label.set_ha('right')
 
-pd.plotting.scatter_matrix(df_corr)
-
+plt.tight_layout()
+plt.gcf().subplots_adjust(wspace=0, hspace=0)
+plt.show()
 
 
 #%%
 
 # Subplot valeur en fonction des autres variables
 
-for i in range(1,11):
+plt.figure(figsize=(10,10))
 
+for i in range(1,11):
+    
     plt.subplot(3,4,i)
 
     plt.scatter(df[variable_corr[i]],df['Valeur'],s=0.5)
