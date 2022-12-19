@@ -210,4 +210,3 @@ from yellowbrick.cluster import KElbowVisualizer
 #%%
 visualizer = KElbowVisualizer(model, k=(2,8))
 visualizer.fit(df4[col_name]) 
-# %%
