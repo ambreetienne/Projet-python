@@ -210,10 +210,3 @@ from yellowbrick.cluster import KElbowVisualizer
 #%%
 visualizer = KElbowVisualizer(model, k=(2,8))
 visualizer.fit(df4[col_name]) 
-# %%
-import statsmodels.api as sm
-
-#%%
-model= sm.OLS(y_train,X_train)
-results= model.fit()
-print(results.summary())
