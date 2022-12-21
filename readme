@@ -1,0 +1,20 @@
+Chère Madame Vesseron, cher lecteur. 
+Nous espérons que vous vous portez bien. Vous vous trouvez sur le git de notre projet « Prédiction de la valeur marchande des joueurs de football », 
+qui a été réalisé par Ambre ETIENNE, Lucas BERNE et Foucauld BERNARD. 
+
+Le git mis à votre disposition est constitué de 4 fichiers de code pur :
+•	1-getdata.py ; 
+•	2-datacleaning.py ; 
+•	3-stat_descriptive_visualisation.py ;
+•	4- modélisation)
+
+De notre base de données sous format Excel (une nettoyée, et une brute) :
+•	Datasofifa.xlsx
+•	Datasofifaclean.xlsx
+
+Et enfin notre notebook : 
+•	Notebook_final.ipynb
+
+Par souci de lisibilité et de simplicité, le notebook ne contient pas l’entièreté de notre code, et donc certains segments ne seront pas exécutables 
+directement dans le notebook. Nous avons cependant pris soin d’intégrer au notebook les parties importantes du code, et nous avons aussi affiché 
+tous les résultats importants d’exécution du code et les graphiques et figures commentés bien sûr. 
