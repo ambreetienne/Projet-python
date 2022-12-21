@@ -8,7 +8,7 @@ Le git mis à votre disposition est constitué de 4 fichiers de code pur :
 •	3-stat_descriptive_visualisation.py ;
 •	4- modélisation)
 
-De notre base de données sous format Excel (une nettoyée, et une brute) :
+De notre base de données sous format Excel (notre base brute, puis la base nettoyée) :
 •	Datasofifa.xlsx
 •	Datasofifaclean.xlsx
 
