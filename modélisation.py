@@ -4,6 +4,7 @@ import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
 import sklearn.metrics
+import statsmodels.api as sm
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
@@ -11,6 +12,7 @@ from sklearn.linear_model import Lasso
 from sklearn.metrics import mean_squared_error 
 from sklearn.linear_model import lasso_path
 from sklearn.linear_model import LassoCV
+
 
 
 # %%
@@ -31,6 +33,71 @@ X_train, X_test, y_train, y_test = train_test_split(
     df2.drop(["Valeur"], axis = 1),
     100*df2[['Valeur']].values.ravel(), test_size=0.2, random_state=0
 )
+
+## REGRESSION LINEAIRE
+
+#%%
+# Première régression linéaire
+model=LinearRegression()
+model.fit(X_train,y_train)
+
+#%%
+# R² de la régression
+model.score(X_train,y_train)
+model.score(X_test,y_test)
+
+#%%
+#Valeur prédite en fonction de sa véritable valeur
+predictions=model.predict(X_test)
+x=range(int(min(predictions)),int(max(predictions)))
+
+plt.plot(x,x,c='r')
+plt.scatter(y_test,predictions)
+
+#%%
+# MSE de la régression
+# Echantillon d'apprentissage
+pred_train = model.predict(X_train)
+mse_train = mean_squared_error(y_train, pred_train)
+
+# Echantillon de test
+pred = model.predict(X_test)
+mse_test =mean_squared_error(y_test, pred)
+
+#%%
+#Sortie stata de la régression
+X_train_cst = sm.add_constant(X_train)
+
+model= sm.OLS(y_train,X_train_cst)
+results= model.fit()
+print(results.summary())
+
+#%%
+# Régression linéaire avec la variable Clause de rupture
+#Normalisation
+col_modele_cr=["Age","Taille","Clause de rupture","Salaire","Valeur","Score total","Attaque","Technique","Mouvement","Puissance","Defense","Gardien","Etat Esprit"]
+df3=df[col_modele_cr]
+features = df[col_modele_cr]
+features = StandardScaler().fit(features.values).transform(features.values)
+df3[col_modele_cr] = features
+
+#%%
+# Echantillon de test et d'apprentissage
+X_train_cr, X_test_cr, y_train_cr, y_test_cr = train_test_split(
+    df3.drop(["Valeur"], axis = 1),
+    100*df3[['Valeur']].values.ravel(), test_size=0.2, random_state=0
+)
+
+#%%
+#Sortie Stata de la régression
+X_train_cr=sm.add_constant(X_train_cr)
+
+model= sm.OLS(y_train_cr,X_train_cr)
+results= model.fit()
+print(results.summary())
+
+
+## REGRESSION LASSO
 
 # %%
 #Lasso pour alpha=0.1
@@ -72,17 +139,12 @@ nb_non_zero = np.apply_along_axis(func1d=np.count_nonzero,arr=coefs_lasso,axis=0
 #%%
 #Nombre de variables retenues en fonction de alpha
 sns.set_style("whitegrid")
-plt.figure()
-p = sns.lineplot(y=nb_non_zero, x=alpha_for_path)
-p.set(title = r"Nombre de variables et paramètre de régularisation ($\alpha$)", xlabel=r'$\alpha$', ylabel='Nb. de variables')
-
-#%%
 ax = plt.gca()
 
 ax.plot(alpha_for_path, nb_non_zero)
 plt.axis('tight')
 plt.xlabel('alpha')
-plt.ylabel('Nombre de variable')
+plt.ylabel('Nb. variables retenues')
 plt.title("Nombre de variables retenues fonction de alpha")
 #%%
 #MSE en fonction de alpha
@@ -98,7 +160,8 @@ for a in my_alphas:
     mse_train.append(mean_squared_error(y_train, pred_train))
 
 #%%
-#MSE de l'échantillon d'entraînement en fonction de alpha
+#MSE de l'échantillon d'apprentissage en fonction de alpha
+sns.set_style("whitegrid")
 ax = plt.gca()
 
 ax.plot(alpha_for_path, mse_train)
@@ -106,21 +169,23 @@ ax.set_xscale('log')
 plt.axis('tight')
 plt.xlabel('alpha')
 plt.ylabel('MSE')
-plt.title("MSE de l'échantillon de test")
+plt.title("MSE de l'échantillon d'apprentissage fonction de alpha")
 
 #%%
 #MSE de l'échantillon de test en fonction de alpha
+sns.set_style("whitegrid")
 ax = plt.gca()
 
-ax.plot(my_alphas, mse_test)
+ax.plot(alpha_for_path, mse_test)
 ax.set_xscale('log')
 plt.axis('tight')
 plt.xlabel('alpha')
 plt.ylabel('MSE')
-plt.title("MSE de l'échantillon de test")
+plt.title("MSE de l'échantillon de test fonction de alpha")
 
 # %%
-#Détermination du alpha optimal
+## Détermination du alpha optimal
+
 # Lasso avec validation croisée en 5 blocs
 model = LassoCV(cv=5, random_state=0, max_iter=10000)
 
@@ -164,49 +229,16 @@ plt.plot(
     model.alphas_ ,
     model.mse_path_.mean(axis=-1),
     "k",
-    label="Average across the folds",
+    label="Moyenne à travers les blocs",
     linewidth=2,
 )
 
 plt.axvline(
-    model.alpha_, linestyle="--", color="k", label="alpha: CV estimate"
+    model.alpha_, linestyle="--", color="k", label="alpha optimal"
 )
 
 plt.legend()
-plt.xlabel("alphas")
-plt.ylabel("Mean square error")
-plt.title("Mean square error on each fold")
+plt.xlabel("alpha")
+plt.ylabel("MSE")
+plt.title("MSE de chaque bloc de validation")
 plt.axis("tight")
-
-
-
-#%%
-### Test clustering
-col_name=["Age","Taille","Salaire","Score total","Attaque","Technique","Mouvement","Puissance","Defense","Gardien","Etat Esprit"]
-col_modele=["Age","Taille","Salaire","Valeur","Score total","Attaque","Technique","Mouvement","Puissance","Defense","Gardien","Etat Esprit"]
-df4=df[col_modele]
-
-#%%
-model = KMeans(n_clusters=4)
-model.fit(df4[col_name])
-# %%
-df4['label'] = model.labels_
-
-# %%
-plt.figure()
-p = sns.scatterplot(
-  data=df4,
-  x="Age",
-  y="Attaque", hue = "label", palette="deep",
-  alpha = 0.4)
-
-# %%
-plt.figure()
-p2 = sns.displot(data=df4, x="Valeur", hue="label", alpha = 0.4)
-# %%
-from sklearn.cluster import KMeans
-from yellowbrick.cluster import KElbowVisualizer
-
-#%%
-visualizer = KElbowVisualizer(model, k=(2,8))
-visualizer.fit(df4[col_name]) 

@@ -35,7 +35,7 @@ def all_ref(n):
 
 
 # %%
-#Fonction donnant le nom d'un joueur à partir de son url
+#Fonction donnant le nom d'un joueur à partir de son code html
 def name (soup):
     info=soup.find('div', {'class': "col-12"})
     return info.find('h1').text.strip()
@@ -176,21 +176,15 @@ def gardien(soup):
     L=[int(all[k].text.strip()) for k in range(len(all))]
     return np.mean(L)
 
-#%%
-def all_info(url):
-    soup=soup_maker(url)
-    return [name(soup),age(soup),poids(soup),taille(soup),overall_rating(soup),
-    potential(soup),wage(soup),value(soup),release_clause(soup),position(soup),
-    attacking(soup),technique(soup),mouvement(soup),puissance(soup),
-    etat_esprit(soup),defense(soup),gardien(soup)]
-
 
 #%%
+# Data frame contenant l'url de 6000 joueurs
 df=pd.DataFrame({'url': all_ref(100)})
 # %%
 L=[[] for i in range(17)]
 
 #%%
+# Ajout des caractéristiques de chaque joueur dans une liste grâce aux fonctions définis au-dessus
 for url in df['url'].values:
     soup=soup_maker(url)
     L[0].append(name(soup))
@@ -212,6 +206,7 @@ for url in df['url'].values:
     L[16].append(etat_esprit(soup))
 
 # %%
+# Ajout des caractéristiques à la dataframe à l'aide de la liste L
 df['Nom']=L[0]
 df['Taille']=L[1]
 df['Age']=L[15]
@@ -229,6 +224,7 @@ df['Puissance']=L[12]
 df['Defense']=L[13]
 df['Gardien']=L[14]
 df['Etat Esprit']=L[16]
+
 #%%
 # Exportation dans un excel
 df.to_excel('Datasofifa.xlsx')
